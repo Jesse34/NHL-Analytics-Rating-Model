@@ -23,6 +23,10 @@ class Skater:
     ppGoals = 0
     ppAssists = 0
 
+    # PK Stats
+    pkGoals = 0
+    pkAssists = 0
+
     hits = 0
     hitsAgainst = 0
     shotsBlocked = 0
@@ -41,25 +45,47 @@ class Skater:
     iSCF = 0
     iHDCF = 0
 
-    ppGoalTo5v5Weight = 0.36
-    pkGoalTo5v5Weight = 2.20
+    ppGoalTo5v5Weight = 10.45
+    pkGoalTo5v5Weight = 1.90
     fAssistToGoalWeight = 0.8
     sAssistToGoalWeight = 0.6
+
+    defenceGoalWeight = 2
+    defenceFAssistWeight = 1.3
+    defenceSAssistWeight = 1.05
 
     def calcOffensiveRating(self):
         self.offensiveRating = 0
         self.ppOffensiveRating = 0
         self.pkOffensiveRating = 0
 
-        self.offensiveRating += (self.goals5v5 * 1)
-        self.offensiveRating += (self.fAssists5v5 * self.fAssistToGoalWeight)
-        self.offensiveRating += (self.sAssists5v5 * self.sAssistToGoalWeight)
+        if (self.position == "D"):
+            self.offensiveRating += ((self.goals5v5 * 1) * self.defenceGoalWeight)
+            self.offensiveRating += ((self.fAssists5v5 * self.fAssistToGoalWeight) * self.defenceFAssistWeight)
+            self.offensiveRating += ((self.sAssists5v5 * self.sAssistToGoalWeight) * self.defenceSAssistWeight)
 
-        self.pkOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
-        self.pkOffensiveRating += (self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight))
-        self.offensiveRating += self.pkOffensiveRating
+            self.ppOffensiveRating += ((self.ppGoals * self.ppGoalTo5v5Weight) * self.defenceGoalWeight)
+            self.ppOffensiveRating += ((self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)) * self.defenceFAssistWeight)
+            self.offensiveRating += (self.ppOffensiveRating)
+
+            self.pkOffensiveRating += ((self.pkGoals * self.pkGoalTo5v5Weight) * self.defenceGoalWeight)
+            self.pkOffensiveRating += ((self.pkAssists * (self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)) * self.defenceFAssistWeight)
+            self.offensiveRating += (self.pkOffensiveRating)
+        else:
+            self.offensiveRating += (self.goals5v5 * 1)
+            self.offensiveRating += (self.fAssists5v5 * self.fAssistToGoalWeight)
+            self.offensiveRating += (self.sAssists5v5 * self.sAssistToGoalWeight)
+
+            self.ppOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
+            self.ppOffensiveRating += (self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight) * self.defenceFAssistWeight)
+            self.offensiveRating += self.ppOffensiveRating
+
+            self.pkOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
+            self.pkOffensiveRating += (self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight) * self.defenceFAssistWeight)
+            self.offensiveRating += self.pkOffensiveRating
 
         oRatingPer60 = self.offensiveRating / (self.toi5v5 / 60)
         self.offensiveRating = oRatingPer60
+        print(self.ppOffensiveRating)
 
         return oRatingPer60

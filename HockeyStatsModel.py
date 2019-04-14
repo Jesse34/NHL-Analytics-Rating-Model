@@ -29,6 +29,9 @@ sAssistsList = []
 #faceoffWinsList = []
 
 offenceRatingList = []
+ppOffenceRatingList = []
+pkOffenceRatingList = []
+
 defenceRatingList = []
 
 # Open and Load json data
@@ -102,6 +105,8 @@ def processData():
             print (s.name + ' ' + s.team)
             print(s.calcOffensiveRating())
             offenceRatingList.append(s.calcOffensiveRating())
+            ppOffenceRatingList.append(s.calcOffensiveRating())
+            pkOffenceRatingList.append(s.calcOffensiveRating())
 
     for player in iPPData:
         for s in skaterList:
@@ -110,11 +115,11 @@ def processData():
                 s.ppAssists = player['Total Assists']
                 s.badPenalties += player['Total Penalties']
 
-    for player in iPPData:
+    for player in iPKData:
         for s in skaterList:
             if (player['Player'] == s.name):
-                s.ppGoals = player['Goals']
-                s.ppAssists = player['Total Assists']
+                s.pkGoals = player['Goals']
+                s.pkAssists = player['Total Assists']
                 s.badPenalties += player['Total Penalties']
 
     skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
@@ -131,26 +136,25 @@ def plotChart():
         y=offenceRatingList,
         name='Offensive Rating'
     )
-    traceDefence = go.Bar(
-        x=nameList,
-        y=fAssistsList,
-        name='5v5 1st Assists'
-    )
-    traceGrit = go.Bar(
-        x=nameList,
-        y=sAssistsList,
-        name='5v5 2nd Assists'
-    )
+    # traceDefence = go.Bar(
+    #     x=nameList,
+    #     y=ppOffenceRatingList,
+    #     name='5v5 1st Assists'
+    # )
+    # traceGrit = go.Bar(
+    #     x=nameList,
+    #     y=ppOffenceRatingList,
+    #     name='5v5 2nd Assists'
+    # )
 
     layout = go.Layout(
         barmode='stack',
         title=go.layout.Title(
             text='N.U.T.S (Numbers Used to Simplify)',
             x=0
-
         )
     )
-    data = [traceOffence, traceDefence, traceGrit]
+    data = [traceOffence]#, traceDefence, traceGrit]
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig, file='player-model')
 
