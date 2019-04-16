@@ -14,15 +14,6 @@ teamList = []
 teamColourList = []
 toiAllList = []
 
-evGoalsList = [] # Not actually even strength, 5v5.
-#ppGoalsList = []
-#shGoalsList = []
-
-fAssistsList = []
-sAssistsList = []
-#ppAssistsList = []
-#pkAssistsList = []
-
 # THESE STATS SHOULD LOOK AT ALL SITUATIONS, NOT JUST 5V5
 #hitsList = []
 #takeawaysList = []
@@ -55,55 +46,48 @@ def loadPKIndividualData():
         return iPKData
 
 # Iterates through two JSON Object lists and merges the matching records
-def mergePlayerData(data1,data2):
-    for player1 in data1:
-        for player2 in data2:
-            if (player1['playerId'] == player2['playerId']):
-                player1.update(player2)
-    return data1
+# def mergePlayerData(data1,data2):
+#     for player1 in data1:
+#         for player2 in data2:
+#             if (player1['playerId'] == player2['playerId']):
+#                 player1.update(player2)
+#     return data1
 
 # Process the data into a usable state
+
 def processData():
-    for player in player5v5Data:
-        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP']) # [-3:] Ensures that players with multiple teams only return the most recent team
-
-        s.toi5v5 = player['TOI']
-        s.goals5v5 = player['Goals']
-        s.fAssists5v5 = player['First Assists']
-        s.sAssists5v5 = player['Second Assists']
-        s.shots5v5 = player['Shots']
-        s.iPointPercentage5v5 = player['IPP']
-
-        s.ixG = player['ixG']
-        s.iCF = player['iCF']
-        s.iFF = player['iFF']
-        s.iSCF = player['iSCF']
-        s.iHDCF = player['iHDCF']
-
+    for player in allData:
+        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP'])  # [-3:] Ensures that players with multiple teams only return the most recent team
         skaterList.append(s)
-        #goalsPK = player['shGoals']
-        #assistsPK = player['shAssists']
+        
+    for player in player5v5Data:
+        for s in skaterList:
+            if (player['Player'] == s.name):
+        
+                s.toi5v5 = player['TOI']
+                s.goals5v5 = player['Goals']
+                s.fAssists5v5 = player['First Assists']
+                s.sAssists5v5 = player['Second Assists']
+                s.shots5v5 = player['Shots']
+                s.iPointPercentage = player['IPP']
+        
+                s.ixG = player['ixG']
+                s.iCF = player['iCF']
+                s.iFF = player['iFF']
+                s.iSCF = player['iSCF']
+                s.iHDCF = player['iHDCF']
 
-        # TRACK THESE IN ALL SITUATIONS
-        # takeaways = player['Takeaways']
-        # hits = player['Hits']
-        # hitsAgainst = player['Hits Taken']
-        # shotsBlocked = player['Shots Blocked']
-        # faceoffWins = player['Faceoffs Won']
-        # faceoffLosses = player['Faceoffs Lost']
-
-        # minorPenalties = player['Minor']
-        # majorPenalties = player['Major']
-        # misconductPenalties = player['Misconduct']
-
-        # nameList.append(s.name)
-        # gamesPlayedList.append(s.games)
-        # teamList.append(s.team)
-        #
-        # evGoalsList.append(s.goals5v5)
-        #
-        # fAssistsList.append(s.fAssists5v5)
-        # sAssistsList.append(s.sAssists5v5)
+                # TRACK THESE IN ALL SITUATIONS
+                # takeaways = player['Takeaways']
+                # hits = player['Hits']
+                # hitsAgainst = player['Hits Taken']
+                # shotsBlocked = player['Shots Blocked']
+                # faceoffWins = player['Faceoffs Won']
+                # faceoffLosses = player['Faceoffs Lost']
+        
+                # minorPenalties = player['Minor']
+                # majorPenalties = player['Major']
+                # misconductPenalties = player['Misconduct']
 
     for player in iPPData:
         for s in skaterList:
@@ -127,8 +111,9 @@ def processData():
                 s.toiALL = player['TOI']
                 offenceRatingList.append(s.calcOffensiveRating())
 
+    skaterList.sort(key=lambda x: x.offensiveRating)#, reverse=True)
     for s in skaterList:
-        if (s.toiALL > 1000):
+        if (s.offensiveRating > 2.9 and s.toiALL > 1200):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
             evOffenceRatingList.append(s.evOffensiveRating)
@@ -136,9 +121,6 @@ def processData():
             pkOffenceRatingList.append(s.pkOffensiveRating)
             print(s)
 
-    skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
-    # for x in skaterList:
-    #     print(x)
 
 # Configure the settings for the chart and sent the data to Plot.ly
 def plotChart():
@@ -176,11 +158,74 @@ def plotChart():
             text='N.U.T.S (Numbers Used to Simplify)',
             x=0
         ),
-        xaxis = dict(tickangle=-40)
+        xaxis = dict(tickangle=-35)
     )
     data = [traceOffence, traceDefence, traceGrit]
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig, file='player-model')
+
+#https://stackoverflow.com/questions/44309507/stacked-bar-plot-using-matplotlib
+def stacked_bar(data, series_labels, category_labels=None,
+                show_values=False, value_format="{}", y_label=None,
+                grid=True, reverse=False):
+    """Plots a stacked bar chart with the data and labels provided.
+
+    Keyword arguments:
+    data            -- 2-dimensional numpy array or nested list
+                       containing data for each series in rows
+    series_labels   -- list of series labels (these appear in
+                       the legend)
+    category_labels -- list of category labels (these appear
+                       on the x-axis)
+    show_values     -- If True then numeric value labels will
+                       be shown on each bar
+    value_format    -- Format string for numeric value labels
+                       (default is "{}")
+    y_label         -- Label for y-axis (str)
+    grid            -- If True display grid
+    reverse         -- If True reverse the order that the
+                       series are displayed (left-to-right
+                       or right-to-left)
+    """
+
+    ny = len(data[0])
+    ind = list(range(ny))
+
+    axes = []
+    cum_size = np.zeros(ny)
+
+    data = np.array(data)
+
+    if reverse:
+        data = np.flip(data, axis=1)
+        category_labels = reversed(category_labels)
+
+    for i, row_data in enumerate(data):
+        axes.append(plt.bar(ind, row_data, bottom=cum_size,
+                            label=series_labels[i]))
+        cum_size += row_data
+
+    if category_labels:
+        plt.xticks(ind, category_labels)
+
+    if y_label:
+        plt.ylabel(y_label)
+
+    plt.legend()
+
+    if grid:
+        plt.grid()
+
+    if show_values:
+        for axis in axes:
+            for bar in axis:
+                w, h = bar.get_width(), bar.get_height()
+                plt.text(bar.get_x() + w / 2, bar.get_y() + h / 2,
+                         value_format.format(h), ha="center",
+                         va="center")
+
+#def matPlotChart():
+
 
 def endTimer():
     print ('Finishing...')
@@ -214,6 +259,11 @@ print ('Processing...')
 processData()
 
 # Plot data on Plot.ly
-plotChart()
+#plotChart()
+
+# Plot data with matplotlib
+#matPlotChart()
+
+
 
 endTimer()

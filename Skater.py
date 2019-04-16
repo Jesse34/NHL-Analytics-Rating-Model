@@ -6,7 +6,13 @@ class Skater:
         self.games = games
 
     def __str__(self):
-        return self.name + ', ' + self.team + ', ' + str(self.toiALL) + 's\n5v5 ORating: ' + str(self.evOffensiveRating) + '\nPP ORating: ' + str(self.ppOffensiveRating) + '\nPK ORating: ' + str(self.pkOffensiveRating) + '\n'
+        line1 = self.name + ', ' + self.team + ', ' + '{0:.2f}'.format(self.toiALL) + 'min \n'
+        line2 = 'Total ORating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
+        line3 = '5v5 ORating: ' + "{0:.4f}".format(self.evOffensiveRating) + '\n'
+        line4 = 'PP ORating: ' + "{0:.4f}".format(self.ppOffensiveRating) + '\n'
+        line5 = 'PK ORating: ' + "{0:.4f}".format(self.pkOffensiveRating) + '\n'
+        line6 = 'IPP: ' + str(self.iPointPercentage) + ' : ' +str(self.iPointPercentage * 0.03) + '\n'
+        return line1 + line2 + line3 + line4 + line5 + line6
 
     offensiveRating = 0
     evOffensiveRating = 0
@@ -50,8 +56,8 @@ class Skater:
     iSCF = 0
     iHDCF = 0
 
-    ppGoalTo5v5Weight = 0.36
-    pkGoalTo5v5Weight = 2.00
+    ppGoalTo5v5Weight = 0.6
+    pkGoalTo5v5Weight = 1.5
     fAssistToGoalWeight = 0.8
     sAssistToGoalWeight = 0.6
 
@@ -67,10 +73,15 @@ class Skater:
         ppWeight = self.toiPP / self.toiALL
         pkWeight = self.toiPK / self.toiALL
 
+        if (self.iPointPercentage != '-'):
+            IPP = self.iPointPercentage  * 0.05
+        else:
+            IPP = 1
+
         if (self.position == "D"):
-            self.evOffensiveRating += ((self.goals5v5 * 1) * self.defenceGoalWeight)
-            self.evOffensiveRating += ((self.fAssists5v5 * self.fAssistToGoalWeight) * self.defenceFAssistWeight)
-            self.evOffensiveRating += ((self.sAssists5v5 * self.sAssistToGoalWeight) * self.defenceSAssistWeight)
+            self.evOffensiveRating += ((self.goals5v5 * 1) * self.defenceGoalWeight) * IPP
+            self.evOffensiveRating += ((self.fAssists5v5 * self.fAssistToGoalWeight) * self.defenceFAssistWeight) * IPP
+            self.evOffensiveRating += ((self.sAssists5v5 * self.sAssistToGoalWeight) * self.defenceSAssistWeight) * IPP
 
             self.ppOffensiveRating += ((self.ppGoals * self.ppGoalTo5v5Weight) * self.defenceGoalWeight)
             self.ppOffensiveRating += ((self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)) * self.defenceFAssistWeight)
@@ -78,9 +89,9 @@ class Skater:
             self.pkOffensiveRating += ((self.pkGoals * self.pkGoalTo5v5Weight) * self.defenceGoalWeight)
             self.pkOffensiveRating += ((self.pkAssists * (self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)) * self.defenceFAssistWeight)
         else:
-            self.offensiveRating += (self.goals5v5 * 1)
-            self.offensiveRating += (self.fAssists5v5 * self.fAssistToGoalWeight)
-            self.offensiveRating += (self.sAssists5v5 * self.sAssistToGoalWeight)
+            self.offensiveRating += (self.goals5v5 * 1) * IPP
+            self.offensiveRating += (self.fAssists5v5 * self.fAssistToGoalWeight) * IPP
+            self.offensiveRating += (self.sAssists5v5 * self.sAssistToGoalWeight) * IPP
 
             self.ppOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
             self.ppOffensiveRating += (self.ppAssists * self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)
