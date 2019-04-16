@@ -6,7 +6,7 @@ class Skater:
         self.games = games
 
     def __str__(self):
-        return self.name + ', ' + self.team
+        return self.name + ', ' + self.team + ', ' + str(self.toiALL) + 's\n5v5 ORating: ' + str(self.evOffensiveRating) + '\nPP ORating: ' + str(self.ppOffensiveRating) + '\nPK ORating: ' + str(self.pkOffensiveRating) + '\n'
 
     offensiveRating = 0
     evOffensiveRating = 0
@@ -85,8 +85,8 @@ class Skater:
             self.ppOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
             self.ppOffensiveRating += (self.ppAssists * self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)
 
-            self.pkOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
-            self.pkOffensiveRating += (self.ppAssists * self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)
+            self.pkOffensiveRating += (self.pkGoals * self.pkGoalTo5v5Weight)
+            self.pkOffensiveRating += (self.pkAssists * self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)
 
         self.offensiveRating += self.evOffensiveRating
         self.offensiveRating += self.ppOffensiveRating

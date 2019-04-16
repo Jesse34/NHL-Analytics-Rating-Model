@@ -134,9 +134,7 @@ def processData():
             evOffenceRatingList.append(s.evOffensiveRating)
             ppOffenceRatingList.append(s.ppOffensiveRating)
             pkOffenceRatingList.append(s.pkOffensiveRating)
-
             print(s)
-
 
     skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
     # for x in skaterList:
