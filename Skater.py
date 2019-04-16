@@ -56,10 +56,10 @@ class Skater:
     iSCF = 0
     iHDCF = 0
 
-    ppGoalTo5v5Weight = 0.6
+    ppGoalTo5v5Weight = 0.7
     pkGoalTo5v5Weight = 1.5
-    fAssistToGoalWeight = 0.8
-    sAssistToGoalWeight = 0.6
+    fAssistToGoalWeight = 0.7
+    sAssistToGoalWeight = 0.5
 
     defenceGoalWeight = 2.2
     defenceFAssistWeight = 1.25
@@ -83,21 +83,21 @@ class Skater:
             self.evOffensiveRating += ((self.fAssists5v5 * self.fAssistToGoalWeight) * self.defenceFAssistWeight) * IPP
             self.evOffensiveRating += ((self.sAssists5v5 * self.sAssistToGoalWeight) * self.defenceSAssistWeight) * IPP
 
-            self.ppOffensiveRating += ((self.ppGoals * self.ppGoalTo5v5Weight) * self.defenceGoalWeight)
-            self.ppOffensiveRating += ((self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)) * self.defenceFAssistWeight)
+            self.ppOffensiveRating += ((self.ppGoals * self.ppGoalTo5v5Weight) * self.defenceGoalWeight) * IPP
+            self.ppOffensiveRating += ((self.ppAssists * (self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)) * self.defenceFAssistWeight) * IPP
 
-            self.pkOffensiveRating += ((self.pkGoals * self.pkGoalTo5v5Weight) * self.defenceGoalWeight)
-            self.pkOffensiveRating += ((self.pkAssists * (self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)) * self.defenceFAssistWeight)
+            self.pkOffensiveRating += ((self.pkGoals * self.pkGoalTo5v5Weight) * self.defenceGoalWeight) * IPP
+            self.pkOffensiveRating += ((self.pkAssists * (self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)) * self.defenceFAssistWeight) * IPP
         else:
             self.offensiveRating += (self.goals5v5 * 1) * IPP
             self.offensiveRating += (self.fAssists5v5 * self.fAssistToGoalWeight) * IPP
             self.offensiveRating += (self.sAssists5v5 * self.sAssistToGoalWeight) * IPP
 
-            self.ppOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight)
-            self.ppOffensiveRating += (self.ppAssists * self.fAssistToGoalWeight * self.ppGoalTo5v5Weight)
+            self.ppOffensiveRating += (self.ppGoals * self.ppGoalTo5v5Weight) * IPP
+            self.ppOffensiveRating += (self.ppAssists * self.fAssistToGoalWeight * self.ppGoalTo5v5Weight) * IPP
 
-            self.pkOffensiveRating += (self.pkGoals * self.pkGoalTo5v5Weight)
-            self.pkOffensiveRating += (self.pkAssists * self.fAssistToGoalWeight * self.pkGoalTo5v5Weight)
+            self.pkOffensiveRating += (self.pkGoals * self.pkGoalTo5v5Weight) * IPP
+            self.pkOffensiveRating += (self.pkAssists * self.fAssistToGoalWeight * self.pkGoalTo5v5Weight) * IPP
 
         self.offensiveRating += self.evOffensiveRating
         self.offensiveRating += self.ppOffensiveRating

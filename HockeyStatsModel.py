@@ -1,5 +1,6 @@
 import json
 import requests
+import plotly
 import plotly.plotly as py
 import plotly.graph_objs as go
 import time
@@ -111,14 +112,14 @@ def processData():
                 s.toiALL = player['TOI']
                 offenceRatingList.append(s.calcOffensiveRating())
 
-    skaterList.sort(key=lambda x: x.offensiveRating)#, reverse=True)
+    skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
     for s in skaterList:
-        if (s.offensiveRating > 2.9 and s.toiALL > 1200):
+        if (s.offensiveRating > 11 and s.toiALL > 1200):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
-            evOffenceRatingList.append(s.evOffensiveRating)
-            ppOffenceRatingList.append(s.ppOffensiveRating)
-            pkOffenceRatingList.append(s.pkOffensiveRating)
+            evOffenceRatingList.append('{0:.3f}'.format(s.evOffensiveRating))
+            ppOffenceRatingList.append('{0:.3f}'.format(s.ppOffensiveRating))
+            pkOffenceRatingList.append('{0:.3f}'.format(s.pkOffensiveRating))
             print(s)
 
 
@@ -130,7 +131,7 @@ def plotChart():
     traceOffence = go.Bar(
         x=nameList,
         y=evOffenceRatingList,
-        name='5v5 Offensive Rating',
+        name='5v5 Offense Rating',
         marker=dict(
             color='rgb(22, 50, 116)'
         )
@@ -138,7 +139,7 @@ def plotChart():
     traceDefence = go.Bar(
         x=nameList,
         y=ppOffenceRatingList,
-        name='PP Offensive Rating',
+        name='PP Offense Rating',
         marker=dict(
             color='rgb(10, 136, 38)'
         )
@@ -146,7 +147,7 @@ def plotChart():
     traceGrit = go.Bar(
         x=nameList,
         y=pkOffenceRatingList,
-        name='PK Offensive Rating',
+        name='PK Offense Rating',
         marker=dict(
             color='rgb(230,16,46)'
         )
@@ -165,67 +166,66 @@ def plotChart():
     py.plot(fig, file='player-model')
 
 #https://stackoverflow.com/questions/44309507/stacked-bar-plot-using-matplotlib
-def stacked_bar(data, series_labels, category_labels=None,
-                show_values=False, value_format="{}", y_label=None,
-                grid=True, reverse=False):
-    """Plots a stacked bar chart with the data and labels provided.
-
-    Keyword arguments:
-    data            -- 2-dimensional numpy array or nested list
-                       containing data for each series in rows
-    series_labels   -- list of series labels (these appear in
-                       the legend)
-    category_labels -- list of category labels (these appear
-                       on the x-axis)
-    show_values     -- If True then numeric value labels will
-                       be shown on each bar
-    value_format    -- Format string for numeric value labels
-                       (default is "{}")
-    y_label         -- Label for y-axis (str)
-    grid            -- If True display grid
-    reverse         -- If True reverse the order that the
-                       series are displayed (left-to-right
-                       or right-to-left)
-    """
-
-    ny = len(data[0])
-    ind = list(range(ny))
-
-    axes = []
-    cum_size = np.zeros(ny)
-
-    data = np.array(data)
-
-    if reverse:
-        data = np.flip(data, axis=1)
-        category_labels = reversed(category_labels)
-
-    for i, row_data in enumerate(data):
-        axes.append(plt.bar(ind, row_data, bottom=cum_size,
-                            label=series_labels[i]))
-        cum_size += row_data
-
-    if category_labels:
-        plt.xticks(ind, category_labels)
-
-    if y_label:
-        plt.ylabel(y_label)
-
-    plt.legend()
-
-    if grid:
-        plt.grid()
-
-    if show_values:
-        for axis in axes:
-            for bar in axis:
-                w, h = bar.get_width(), bar.get_height()
-                plt.text(bar.get_x() + w / 2, bar.get_y() + h / 2,
-                         value_format.format(h), ha="center",
-                         va="center")
+# def stacked_bar(data, series_labels, category_labels=None,
+#                 show_values=False, value_format="{}", y_label=None,
+#                 grid=True, reverse=False):
+#     """Plots a stacked bar chart with the data and labels provided.
+#
+#     Keyword arguments:
+#     data            -- 2-dimensional numpy array or nested list
+#                        containing data for each series in rows
+#     series_labels   -- list of series labels (these appear in
+#                        the legend)
+#     category_labels -- list of category labels (these appear
+#                        on the x-axis)
+#     show_values     -- If True then numeric value labels will
+#                        be shown on each bar
+#     value_format    -- Format string for numeric value labels
+#                        (default is "{}")
+#     y_label         -- Label for y-axis (str)
+#     grid            -- If True display grid
+#     reverse         -- If True reverse the order that the
+#                        series are displayed (left-to-right
+#                        or right-to-left)
+#     """
+#
+#     ny = len(data[0])
+#     ind = list(range(ny))
+#
+#     axes = []
+#     cum_size = np.zeros(ny)
+#
+#     data = np.array(data)
+#
+#     if reverse:
+#         data = np.flip(data, axis=1)
+#         category_labels = reversed(category_labels)
+#
+#     for i, row_data in enumerate(data):
+#         axes.append(plt.bar(ind, row_data, bottom=cum_size,
+#                             label=series_labels[i]))
+#         cum_size += row_data
+#
+#     if category_labels:
+#         plt.xticks(ind, category_labels)
+#
+#     if y_label:
+#         plt.ylabel(y_label)
+#
+#     plt.legend()
+#
+#     if grid:
+#         plt.grid()
+#
+#     if show_values:
+#         for axis in axes:
+#             for bar in axis:
+#                 w, h = bar.get_width(), bar.get_height()
+#                 plt.text(bar.get_x() + w / 2, bar.get_y() + h / 2,
+#                          value_format.format(h), ha="center",
+#                          va="center")
 
 #def matPlotChart():
-
 
 def endTimer():
     print ('Finishing...')
@@ -259,7 +259,7 @@ print ('Processing...')
 processData()
 
 # Plot data on Plot.ly
-#plotChart()
+plotChart()
 
 # Plot data with matplotlib
 #matPlotChart()
