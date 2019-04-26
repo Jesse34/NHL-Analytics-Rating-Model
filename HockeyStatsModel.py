@@ -7,6 +7,8 @@ import time
 from operator import itemgetter
 from Skater import Skater
 
+NHL_TEAM_5v5_GOALS_DICT = {}
+
 # Lists to collect the data together from different sources.
 skaterList = []
 nameList = []
@@ -25,14 +27,25 @@ offenceRatingList = []
 evOffenceRatingList = []
 ppOffenceRatingList = []
 pkOffenceRatingList = []
+evShotRatingList = []
+ppShotRatingList = []
+pkShotRatingList = []
 
 defenceRatingList = []
 
 # Open and Load json data
+def loadAllTeamData():
+    with open('Team Season Stats 2018-19.json') as f:
+        allTeamData = json.load(f)
+        return allTeamData
+def load5v5TeamData():
+    with open('5v5 Team Season Stats 2018-19.json') as f:
+        team5v5Data = json.load(f)
+        return team5v5Data
 def loadAllIndividualData():
     with open('Total Individual Skater Stats 2018-19.json') as f:
-        allData = json.load(f)
-        return allData
+        allSkaterData = json.load(f)
+        return allSkaterData
 def load5v5IndividualData():
     with open('5v5 Individual Skater Stats 2018-19.json') as f:
         i5v5Data = json.load(f)
@@ -57,8 +70,13 @@ def loadPKIndividualData():
 # Process the data into a usable state
 
 def processData():
-    for player in allData:
-        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP'])  # [-3:] Ensures that players with multiple teams only return the most recent team
+    NHL_TEAM_5v5_GOALS_DICT = {}
+
+    for team in team5v5Data:
+        NHL_TEAM_5v5_GOALS_DICT[team['Abbr']] = team['GF']
+
+    for player in allSkaterData:
+        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP'], player['TOI'])  # [-3:] Ensures that players with multiple teams only return the most recent team
         skaterList.append(s)
         
     for player in player5v5Data:
@@ -69,14 +87,26 @@ def processData():
                 s.goals5v5 = player['Goals']
                 s.fAssists5v5 = player['First Assists']
                 s.sAssists5v5 = player['Second Assists']
-                s.shots5v5 = player['Shots']
                 s.iPointPercentage = player['IPP']
-        
-                s.ixG = player['ixG']
-                s.iCF = player['iCF']
-                s.iFF = player['iFF']
-                s.iSCF = player['iSCF']
-                s.iHDCF = player['iHDCF']
+
+                if (player['Total Points'] > 0):
+                    ptsPerGP =  player['Total Points'] / s.games
+                    teamGoalsPerGame =  NHL_TEAM_5v5_GOALS_DICT[s.team] / 82
+                    s.iTeamPointPercentage = ptsPerGP / teamGoalsPerGame
+                    print (s.team + ", " + s.name + ": " + "{0:.3f}".format(ptsPerGP) + " / " + "{0:.3f}".format(teamGoalsPerGame) + " = " + "{0:.3f}".format(s.iTeamPointPercentage) + " : " + "{0:.3f}".format(s.iTeamPointPercentage * 0.05))
+                    print ("  -  " + "{0:.2f}".format(s.toiALL/s.games) + "  -  " + "{0:.3f}".format(((s.toiALL/s.games)*0.05)))
+                else:
+                    s.iTeamPointPercentage = 0
+
+                s.evixG = player['ixG']
+                s.eviCF = player['iCF']
+                s.eviFF = player['iFF']
+                s.eviSF = player['Shots']
+                s.eviSCF = player['iSCF']
+                s.eviHDCF = player['iHDCF']
+
+                # s.teamGoals5v5
+                # s.ippTeamGoals5v5
 
                 # TRACK THESE IN ALL SITUATIONS
                 # takeaways = player['Takeaways']
@@ -98,6 +128,13 @@ def processData():
                 s.ppAssists = player['Total Assists']
                 s.badPenalties += player['Total Penalties']
 
+                s.ppixG = player['ixG']
+                s.ppiCF = player['iCF']
+                s.ppiFF = player['iFF']
+                s.ppiSF = player['Shots']
+                s.ppiSCF = player['iSCF']
+                s.ppiHDCF = player['iHDCF']
+
     for player in iPKData:
         for s in skaterList:
             if (player['Player'] == s.name):
@@ -106,21 +143,29 @@ def processData():
                 s.pkAssists = player['Total Assists']
                 s.badPenalties += player['Total Penalties']
 
-    for player in allData:
-        for s in skaterList:
-            if (player['Player'] == s.name):
-                s.toiALL = player['TOI']
-                offenceRatingList.append(s.calcOffensiveRating())
+                s.pkixG = player['ixG']
+                s.pkiCF = player['iCF']
+                s.pkiFF = player['iFF']
+                s.pkiSF = player['Shots']
+                s.pkiSCF = player['iSCF']
+                s.pkiHDCF = player['iHDCF']
+
+    for s in skaterList:
+        offenceRatingList.append(s.calcOffensiveRating())
 
     skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
+
     for s in skaterList:
-        if (s.offensiveRating > 11 and s.toiALL > 1200):
+        if (s.toiALL > 1200 and s.offensiveRating > 1):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
             evOffenceRatingList.append('{0:.3f}'.format(s.evOffensiveRating))
             ppOffenceRatingList.append('{0:.3f}'.format(s.ppOffensiveRating))
             pkOffenceRatingList.append('{0:.3f}'.format(s.pkOffensiveRating))
+
             print(s)
+
+    print (str(len(nameList)) + ' results\n')
 
 
 # Configure the settings for the chart and sent the data to Plot.ly
@@ -136,22 +181,24 @@ def plotChart():
             color='rgb(22, 50, 116)'
         )
     )
-    traceDefence = go.Bar(
+    tracePPOffence = go.Bar(
         x=nameList,
         y=ppOffenceRatingList,
         name='PP Offense Rating',
         marker=dict(
-            color='rgb(10, 136, 38)'
+            color='rgb(24, 118, 242)'
         )
     )
-    traceGrit = go.Bar(
+    tracePKOffence = go.Bar(
         x=nameList,
         y=pkOffenceRatingList,
         name='PK Offense Rating',
         marker=dict(
-            color='rgb(230,16,46)'
+            color='rgb(10, 136, 38)'
         )
     )
+
+    # rgb(244,233,17)'
 
     layout = go.Layout(
         barmode='stack',
@@ -161,7 +208,7 @@ def plotChart():
         ),
         xaxis = dict(tickangle=-35)
     )
-    data = [traceOffence, traceDefence, traceGrit]
+    data = [traceOffence, tracePPOffence, tracePKOffence]
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig, file='player-model')
 
@@ -237,7 +284,9 @@ print ('Starting...')
 start = time.time()
 
 # Convert JSON data to usable object lists
-allData = loadAllIndividualData()
+allTeamData = loadAllTeamData()
+team5v5Data = load5v5TeamData()
+allSkaterData = loadAllIndividualData()
 i5v5Data = load5v5IndividualData()
 iPPData = loadPPIndividualData()
 iPKData = loadPKIndividualData()
@@ -248,7 +297,9 @@ iPKData = loadPKIndividualData()
 # playerData = mergePlayerData(playerData, penaltyData)
 # playerData = mergePlayerData(playerData, miscData)
 
-playerAllData = allData # On-Ice is for later
+teamAllData = allTeamData # On-Ice is for later
+team5v5Data = team5v5Data # On-Ice is for later
+playerAllData = allSkaterData # On-Ice is for later
 player5v5Data = i5v5Data # On-Ice is for later
 playerPPData = iPPData # On-Ice is for later
 playerPKData = iPKData # On-Ice is for later
@@ -263,7 +314,6 @@ plotChart()
 
 # Plot data with matplotlib
 #matPlotChart()
-
 
 
 endTimer()
