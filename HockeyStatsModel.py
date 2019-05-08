@@ -76,7 +76,7 @@ def processData():
         NHL_TEAM_5v5_GOALS_DICT[team['Abbr']] = team['GF']
 
     for player in allSkaterData:
-        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP'], player['TOI'])  # [-3:] Ensures that players with multiple teams only return the most recent team
+        s = Skater(player['Player'], player['Team'][-3:], player['Position'], player['GP'], player['TOI'], player['SH%'])  # [-3:] Ensures that players with multiple teams only return the most recent team
         skaterList.append(s)
         
     for player in player5v5Data:
@@ -93,8 +93,8 @@ def processData():
                     ptsPerGP =  player['Total Points'] / s.games
                     teamGoalsPerGame =  NHL_TEAM_5v5_GOALS_DICT[s.team] / 82
                     s.iTeamPointPercentage = ptsPerGP / teamGoalsPerGame
-                    print (s.team + ", " + s.name + ": " + "{0:.3f}".format(ptsPerGP) + " / " + "{0:.3f}".format(teamGoalsPerGame) + " = " + "{0:.3f}".format(s.iTeamPointPercentage) + " : " + "{0:.3f}".format(s.iTeamPointPercentage * 0.05))
-                    print ("  -  " + "{0:.2f}".format(s.toiALL/s.games) + "  -  " + "{0:.3f}".format(((s.toiALL/s.games)*0.05)))
+                    #print (s.team + ", " + s.name + ": " + "{0:.3f}".format(ptsPerGP) + " / " + "{0:.3f}".format(teamGoalsPerGame) + " = " + "{0:.3f}".format(s.iTeamPointPercentage) + " : " + "{0:.3f}".format(s.iTeamPointPercentage * 0.05))
+                    #print ("  -  " + "{0:.2f}".format(s.toiALL/s.games) + "  -  " + "{0:.3f}".format(((s.toiALL/s.games)*0.05)))
                 else:
                     s.iTeamPointPercentage = 0
 
@@ -155,15 +155,21 @@ def processData():
 
     skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
 
+    count = 0
+    limit = 75
     for s in skaterList:
-        if (s.toiALL > 1200 and s.offensiveRating > 1):
+        if (s.team == "TOR" and limit > count):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
             evOffenceRatingList.append('{0:.3f}'.format(s.evOffensiveRating))
             ppOffenceRatingList.append('{0:.3f}'.format(s.ppOffensiveRating))
             pkOffenceRatingList.append('{0:.3f}'.format(s.pkOffensiveRating))
+            count += 1
 
             print(s)
+            print("Off Points Rating: " + str(s.offensivePointsRating))
+            print("Off Shots Rating: " + str(s.offensiveShotRating))
+            print("Total Offensive Rating: " + str(s.offensiveRating))
 
     print (str(len(nameList)) + ' results\n')
 
@@ -186,7 +192,7 @@ def plotChart():
         y=ppOffenceRatingList,
         name='PP Offense Rating',
         marker=dict(
-            color='rgb(24, 118, 242)'
+            color='rgb(10, 136, 38)'
         )
     )
     tracePKOffence = go.Bar(
@@ -194,19 +200,21 @@ def plotChart():
         y=pkOffenceRatingList,
         name='PK Offense Rating',
         marker=dict(
-            color='rgb(10, 136, 38)'
+            color='rgb(234, 32, 42)'
         )
     )
 
-    # rgb(244,233,17)'
+    #rgb(244,233,17)
+    #rgb(24, 118, 242)
+    # '
 
     layout = go.Layout(
         barmode='stack',
         title=go.layout.Title(
-            text='N.U.T.S (Numbers Used to Simplify)',
+            text='Offensive Efficiency',
             x=0
         ),
-        xaxis = dict(tickangle=-35)
+        xaxis = dict(tickangle=-30)
     )
     data = [traceOffence, tracePPOffence, tracePKOffence]
     fig = go.Figure(data=data, layout=layout)

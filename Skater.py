@@ -1,11 +1,58 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Made mistakes with scaling the Shots rating to work alongside the Points rating. Will need to players like McDavid vs Ovechkin on paper to find mistakes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Skater:
-    def __init__(self, name, team, position, games, toiAll):
+    def __init__(self, name, team, position, games, toiAll, shPerc):
         self.name = name
         self.team = team
         self.position = position
         self.games = games
         self.toiALL = toiAll
+        self.shPercentage = shPerc
 
     def __str__(self):
         line1 = self.name + ', ' + self.team + ', ' + '{0:.2f}'.format(self.toiALL) + 'min \n'
@@ -13,13 +60,20 @@ class Skater:
         line3 = '5v5 ORating: ' + "{0:.4f}".format(self.evOffensiveRating) + '\n'
         line4 = 'PP ORating: ' + "{0:.4f}".format(self.ppOffensiveRating) + '\n'
         line5 = 'PK ORating: ' + "{0:.4f}".format(self.pkOffensiveRating) + '\n'
-        line6 = 'IPP: ' + str(self.iPointPercentage) + '\n'#' : ' +str(self.iPointPercentage * 0.03) + '\n'
+        line6 = 'IPP: ' + str(self.iPointPercentage) + ' : TPP ' + "{0:.2f}".format(self.iTeamPointPercentage * 100) + '\n'
         return line1 + line2 + line3 + line4 + line5 + line6
 
     offensiveRating = 0
+    offensivePointsRating = 0
+    offensiveShotRating = 0
+
     evOffensiveRating = 0
     ppOffensiveRating = 0
     pkOffensiveRating = 0
+
+    evShotQualityAdjustment = 0
+    ppShotQualityAdjustment = 0
+    pkShotQualityAdjustment = 0
 
     toi5v5 = 0
     goals5v5 = 0
@@ -96,14 +150,25 @@ class Skater:
     pkShotsRating = 0
 
     def calcOffensiveRating(self):
+        toiAllWeight = self.toiALL / self.games * 0.05
+
         self.offensiveRating = 0
         self.ppOffensiveRating = 0
         self.pkOffensiveRating = 0
 
         self.calcOffensivePointsRating()
+        self.evOffensiveRating += self.evPointsRating
+        self.ppOffensiveRating += self.ppPointsRating
+        self.pkOffensiveRating += self.pkPointsRating
+
         self.calcOffensiveShotsRating()
+        self.evOffensiveRating += self.evShotsRating
+        self.ppOffensiveRating += self.ppShotsRating
+        self.pkOffensiveRating += self.pkShotsRating
 
         self.offensiveRating += (self.evOffensiveRating + self.ppOffensiveRating + self.pkOffensiveRating)
+
+        self.offensiveRating *= toiAllWeight
 
         evORatingPer60 = 0
         ppORatingPer60 = 0
@@ -113,11 +178,20 @@ class Skater:
         pkWeight = self.toiPK / self.toiALL
 
         if (self.toi5v5 > 0):
-            evORatingPer60 = self.offensiveRating / (self.toi5v5 / 60)
+            self.evPointsRating = self.evPointsRating / (self.toi5v5 / 60)
+            self.evShotsRating = self.evShotsRating / (self.toi5v5 / 60)
+            evORatingPer60 += self.evPointsRating + self.evShotsRating
         if (self.toiPP > 0):
-            ppORatingPer60 = self.ppOffensiveRating / (self.toiPP / 60) * ppWeight
+            self.ppPointsRating = (self.ppPointsRating / (self.toiPP / 60)) * ppWeight
+            self.ppShotsRating = (self.ppShotsRating / (self.toiPP / 60)) * ppWeight
+            ppORatingPer60 += self.ppPointsRating + self.ppShotsRating
         if (self.toiPK > 0):
-            pkORatingPer60 = self.pkOffensiveRating / (self.toiPK / 60) * pkWeight
+            self.pkPointsRating = (self.pkPointsRating / (self.toiPK / 60)) * pkWeight
+            self.pkShotsRating = (self.pkShotsRating / (self.toiPK / 60)) * pkWeight
+            pkORatingPer60 += self.pkPointsRating + self.pkShotsRating
+
+        self.offensivePointsRating = self.evPointsRating + self.ppPointsRating + self.pkPointsRating
+        self.offensiveShotRating = self.evShotsRating + self.ppShotsRating + self.pkShotsRating
 
         self.evOffensiveRating = evORatingPer60
         self.ppOffensiveRating = ppORatingPer60
@@ -126,26 +200,13 @@ class Skater:
         ORatingPer60 = evORatingPer60 + ppORatingPer60 + pkORatingPer60
 
         self.offensiveRating = ORatingPer60
+
         return ORatingPer60
 
     #
     #   Offensive Points Rating
     #
     def calcOffensivePointsRating(self):
-        toiAllWeight = self.toiALL / self.games * 0.05
-
-        if (self.iTeamPointPercentage != '-'):
-            TPP = self.iTeamPointPercentage * 0.05
-        else:
-            TPP = 1
-            #qotFactor
-
-        if (self.iPointPercentage != '-'):
-            IPP = self.iPointPercentage  * 0.05
-        else:
-            IPP = 1
-
-        #print ("TPP  " + str(TPP) + " IPP " + str(IPP))
 
         evG = self.goals5v5 * 1
         evA1 = self.fAssists5v5 * self.fAssistToGoalWeight
@@ -178,16 +239,6 @@ class Skater:
             self.pkPointsRating += pkG
             self.pkPointsRating += pkA
 
-
-        self.evOffensiveRating += self.evPointsRating * (IPP + TPP)
-        self.ppOffensiveRating += self.ppPointsRating * (IPP + TPP)
-        self.pkOffensiveRating += self.pkPointsRating * (IPP + TPP)
-
-        self.evOffensiveRating *= toiAllWeight
-        self.ppOffensiveRating *= toiAllWeight
-        self.pkOffensiveRating *= toiAllWeight
-
-
     #
     #   Offensive Shots Rating
     #
@@ -205,6 +256,14 @@ class Skater:
         SCFWeight = 0.020
         HDCFWeight = 0.150
 
+        evxFSHLeagueAvg = 0.057
+        ppxFSHLeagueAvg = 0.092
+        pkxFSHLeagueAvg = 0.070
+
+        if (self.shPercentage != '-'):
+            self.evShotQualityAdjustment = (evxFSHLeagueAvg * self.shPercentage) * 0.10
+            self.ppShotQualityAdjustment = (ppxFSHLeagueAvg * self.shPercentage) * 0.10
+            self.pkShotQualityAdjustment = (pkxFSHLeagueAvg * self.shPercentage) * 0.10
         #
         #   Even Strength (5v5)
         #
@@ -214,12 +273,12 @@ class Skater:
         eviSCF = self.eviSCF * SCFWeight
         eviHDCF = self.eviHDCF * HDCFWeight
 
-        evShotsRating = eviCF + eviFF + eviSF + eviSCF + eviHDCF
+        self.evShotsRating = eviCF + eviFF + eviSF + eviSCF + eviHDCF
 
         if (self.position == "D"):
-            self.evOffensiveRating += evShotsRating * self.evDefenceShotWeight
+            self.evShotsRating = (self.evShotsRating * self.evDefenceShotWeight) * self.evShotQualityAdjustment
         else:
-            self.evOffensiveRating += evShotsRating
+            self.evShotsRating = self.evShotsRating * self.evShotQualityAdjustment
 
         #
         #   Powerplay
@@ -230,12 +289,12 @@ class Skater:
         ppiSCF = self.ppiSCF * SCFWeight
         ppiHDCF = self.ppiHDCF * HDCFWeight
 
-        ppShotsRating = ppiCF + ppiFF + ppiSF + ppiSCF + ppiHDCF
+        self.ppShotsRating = ppiCF + ppiFF + ppiSF + ppiSCF + ppiHDCF
 
         if (self.position == "D"):
-            self.ppOffensiveRating += ppShotsRating * self.ppDefenceShotWeight
+            self.ppShotsRating = (self.ppShotsRating * self.ppDefenceShotWeight) * self.ppShotQualityAdjustment
         else:
-            self.ppOffensiveRating += ppShotsRating * self.ppForwardShotWeight
+            self.ppShotsRating = (self.ppShotsRating * self.ppForwardShotWeight) * self.ppShotQualityAdjustment
 
         #
         #   Penalty Kill
@@ -246,9 +305,9 @@ class Skater:
         pkiSCF = self.pkiSCF * SCFWeight
         pkiHDCF = self.pkiHDCF * HDCFWeight
 
-        pkShotsRating = pkiCF + pkiFF + pkiSF + pkiSCF + pkiHDCF
+        self.pkShotsRating = pkiCF + pkiFF + pkiSF + pkiSCF + pkiHDCF
 
         if (self.position == "D"):
-            self.pkOffensiveRating += pkShotsRating * self.pkDefenceShotWeight
+            self.pkShotsRating = (self.pkShotsRating * self.pkDefenceShotWeight) * self.pkShotQualityAdjustment
         else:
-            self.pkOffensiveRating += pkShotsRating * self.pkForwardShotWeight
+            self.pkShotsRating = (self.pkShotsRating * self.pkForwardShotWeight) * self.pkShotQualityAdjustment
