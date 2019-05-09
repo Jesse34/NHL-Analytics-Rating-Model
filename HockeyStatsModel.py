@@ -41,32 +41,32 @@ defenceRatingList = []
 # Open and Load json data
 def loadAllTeamData():
     """Load JSON for Team Season Data in All Situations 2018-19"""
-    with open('Team Season Stats 2018-19.json') as f:
+    with open('JSON\\Team Season Stats 2018-19.json') as f:
         allTeamData = json.load(f)
         return allTeamData
 def load5v5TeamData():
     """Load JSON for Team Season Data at 5v5 (Even Strength) 2018-19"""
-    with open('5v5 Team Season Stats 2018-19.json') as f:
+    with open('JSON\\5v5 Team Season Stats 2018-19.json') as f:
         team5v5Data = json.load(f)
         return team5v5Data
 def loadAllIndividualData():
     """Load JSON for Player Data in All Situations 2018-19"""
-    with open('Total Individual Skater Stats 2018-19.json') as f:
+    with open('JSON\\Total Individual Skater Stats 2018-19.json') as f:
         allSkaterData = json.load(f)
         return allSkaterData
 def load5v5IndividualData():
     """Load JSON for Player Data at 5v5 (Even Strength) 2018-19"""
-    with open('5v5 Individual Skater Stats 2018-19.json') as f:
+    with open('JSON\\5v5 Individual Skater Stats 2018-19.json') as f:
         i5v5Data = json.load(f)
         return i5v5Data
 def loadPPIndividualData():
     """Load JSON for Player Data at 5v4 or 5-3 (Powerplay) 2018-19"""
-    with open('PP Individual Skater Stats 2018-19.json') as f:
+    with open('JSON\\PP Individual Skater Stats 2018-19.json') as f:
         iPPData = json.load(f)
         return iPPData
 def loadPKIndividualData():
     """Load JSON for Player Data at 4v5 or 3-5 (Penalty Kill) 2018-19"""
-    with open('PK Individual Skater Stats 2018-19.json') as f:
+    with open('JSON\\PK Individual Skater Stats 2018-19.json') as f:
         iPKData = json.load(f)
         return iPKData
 
