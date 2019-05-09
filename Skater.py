@@ -14,13 +14,18 @@ class Skater:
         line4 = 'PP ORating: ' + "{0:.4f}".format(self.ppOffensiveRating) + '\n'
         line5 = 'PK ORating: ' + "{0:.4f}".format(self.pkOffensiveRating) + '\n'
         line6 = 'Offensive Points Rating: ' + "{0:.4f}".format(self.offensivePointsRating) + '\n'
-        line7 = 'Offensive Shots Rating: ' + "{0:.4f}".format(self.offensiveShotRating) + '\n'
+        line7 = 'Offensive Shots Rating: ' + "{0:.4f}".format(self.offensiveShotsRating) + '\n'
         line8 = 'Total Offensive Rating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
         return line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8# + line9
 
+    #
+    # Declaring variables to store any applicable data
+    #
+    # Some of this isn't used yet and some of it should be moved into a different "Model" class to cut down on the clutter
+    #
     offensiveRating = 0
     offensivePointsRating = 0
-    offensiveShotRating = 0
+    offensiveShotsRating = 0
 
     evOffensiveRating = 0
     ppOffensiveRating = 0
@@ -104,7 +109,14 @@ class Skater:
     ppShotsRating = 0
     pkShotsRating = 0
 
+
     def calcOffensiveRating(self):
+        """
+        Calculate a Rating to combine a Player's total Offensive Output per 60min of play.
+        This looks at Even Strength, Penalty Kill, and Powerplay situations
+        Goals/Assists & Shooting output data in each situation will have their values weighted and added up.
+        :return: Overall Offensive Rating
+        """
         toiAllWeight = self.toiALL / self.games * 0.05
 
         self.offensiveRating = 0
@@ -150,7 +162,7 @@ class Skater:
             pkORatingPer60 += self.pkPointsRating + self.pkShotsRating
 
         self.offensivePointsRating = self.evPointsRating + self.ppPointsRating + self.pkPointsRating
-        self.offensiveShotRating = self.evShotsRating + self.ppShotsRating + self.pkShotsRating
+        self.offensiveShotsRating = self.evShotsRating + self.ppShotsRating + self.pkShotsRating
 
         self.evOffensiveRating = evORatingPer60
         self.ppOffensiveRating = ppORatingPer60
@@ -162,11 +174,11 @@ class Skater:
 
         return ORatingPer60
 
-    #
-    #   Offensive Points Rating
-    #
     def calcOffensivePointsRating(self):
-
+        """
+        Calculates a player's Points Rating to be used in the Overall Offense Rating
+        :return: Offensive Points Rating
+        """
         evG = self.goals5v5 * 1
         evA1 = self.fAssists5v5 * self.fAssistToGoalWeight
         evA2 = self.sAssists5v5 * self.sAssistToGoalWeight
@@ -198,17 +210,12 @@ class Skater:
             self.pkPointsRating += pkG
             self.pkPointsRating += pkA
 
-    #
-    #   Offensive Shots Rating
-    #
-    # Each of these stats are including the weighting of of the stats above it in the block
-    #   eviCF = even strength individual Corsi For
-    #   eviCF = even strength individual Fenwick For
-    #   eviSF = even strength individual Shots For
-    #   eviSCF = even strength individual Scoring Chances For
-    #   eviSCF = even strength individual High-Danger Scoring Chances For
-    #
     def calcOffensiveShotsRating(self):
+        """
+        Calculates a player's Shots Rating to be used in the Overall Offense Rating.
+        :return: Offensive Shots Rating
+        """
+
         CFWeight = 0.040
         FFWeight = 0.020
         SFWeight = 0.020
@@ -226,6 +233,12 @@ class Skater:
             self.pkShotQualityAdjustment = (pkxFSHLeagueAvg * self.shPercentage) * 0.10
         #
         #   Even Strength (5v5)
+        #
+        #   eviCF = even strength individual Corsi For
+        #   eviCF = even strength individual Fenwick For
+        #   eviSF = even strength individual Shots For
+        #   eviSCF = even strength individual Scoring Chances For
+        #   eviHDSCF = even strength individual High-Danger Scoring Chances For
         #
         eviCF = self.eviCF * CFWeight
         eviFF = self.eviFF * FFWeight

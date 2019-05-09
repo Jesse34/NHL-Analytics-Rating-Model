@@ -40,41 +40,43 @@ defenceRatingList = []
 
 # Open and Load json data
 def loadAllTeamData():
+    """Load JSON for Team Season Data in All Situations 2018-19"""
     with open('Team Season Stats 2018-19.json') as f:
         allTeamData = json.load(f)
         return allTeamData
 def load5v5TeamData():
+    """Load JSON for Team Season Data at 5v5 (Even Strength) 2018-19"""
     with open('5v5 Team Season Stats 2018-19.json') as f:
         team5v5Data = json.load(f)
         return team5v5Data
 def loadAllIndividualData():
+    """Load JSON for Player Data in All Situations 2018-19"""
     with open('Total Individual Skater Stats 2018-19.json') as f:
         allSkaterData = json.load(f)
         return allSkaterData
 def load5v5IndividualData():
+    """Load JSON for Player Data at 5v5 (Even Strength) 2018-19"""
     with open('5v5 Individual Skater Stats 2018-19.json') as f:
         i5v5Data = json.load(f)
         return i5v5Data
 def loadPPIndividualData():
+    """Load JSON for Player Data at 5v4 or 5-3 (Powerplay) 2018-19"""
     with open('PP Individual Skater Stats 2018-19.json') as f:
         iPPData = json.load(f)
         return iPPData
 def loadPKIndividualData():
+    """Load JSON for Player Data at 4v5 or 3-5 (Penalty Kill) 2018-19"""
     with open('PK Individual Skater Stats 2018-19.json') as f:
         iPKData = json.load(f)
         return iPKData
 
-# Iterates through two JSON Object lists and merges the matching records
-# def mergePlayerData(data1,data2):
-#     for player1 in data1:
-#         for player2 in data2:
-#             if (player1['playerId'] == player2['playerId']):
-#                 player1.update(player2)
-#     return data1
-
-# Process the data into a usable state
-
 def processData():
+    """
+    Collects all of the data from different sources.
+    Then Calculations are ran to gather each players Overall Offensive rating (and all other specific Offensive Ratings).
+    The Player list is then sorts based on their overall rating to sort for display (Plot.ly cannot sort a stacked bar chart).
+    Lastly, a filter is applied to select a specific dataset for display.
+    """
     NHL_TEAM_5v5_GOALS_DICT = {}
 
     for team in team5v5Data:
@@ -155,6 +157,7 @@ def processData():
                 s.pkiSCF = player['iSCF']
                 s.pkiHDCF = player['iHDCF']
 
+    #Calculate Each Players Offensive Rating
     for s in skaterList:
         offenceRatingList.append(s.calcOffensiveRating())
 
@@ -162,8 +165,10 @@ def processData():
 
     count = 0
     limit = 30
+
+    # Data Selection Filter
     for s in skaterList:
-        if (limit > count and s.toiALL > 1200):
+        if (limit > count and s.toiALL > 1200 and s.position == "D"):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
             evOffenceRatingList.append(s.evOffensiveRating)
@@ -178,7 +183,6 @@ def processData():
             ppPointsRatingList.append(s.ppPointsRating)
             pkPointsRatingList.append(s.pkPointsRating)
             count += 1
-
             print(s)
 
     print (str(len(nameList)) + ' results\n')
@@ -186,13 +190,16 @@ def processData():
 
 # Configure the settings for the chart and sent the data to Plot.ly
 def plotChart():
+    """
+    Utilizing the functions in the Plot.ly library, the data is organized to display the data in an appealing way.
+    """
     print ('Plotting...\n')
 
     # Even Strength Traces
     tracePointOffence = go.Bar(
         x=nameList,
         y=evPointsRatingList,
-        name='5v5 Point Scoring Rating',
+        name='5v5 Point Scoring',
         marker=dict(
             color='rgb(22, 50, 116)'
         )
@@ -200,7 +207,7 @@ def plotChart():
     traceShotOffence = go.Bar(
         x=nameList,
         y=evShotsRatingList,
-        name='5v5 Shot Contribution Rating',
+        name='5v5 Shot Contribution',
         marker=dict(
             color='rgb(22, 80, 156)'
         )
@@ -210,7 +217,7 @@ def plotChart():
     tracePPPointOffence = go.Bar(
         x=nameList,
         y=ppPointsRatingList,
-        name='PP Point Scoring Rating',
+        name='PP Point Scoring',
         marker=dict(
             color='rgb(20, 136, 45)'
         )
@@ -218,7 +225,7 @@ def plotChart():
     tracePPShotOffence = go.Bar(
         x=nameList,
         y=ppShotsRatingList,
-        name='PP Shot Contribution Rating',
+        name='PP Shot Contribution',
         marker=dict(
             color='rgb(20, 160, 50)'
         )
@@ -228,7 +235,7 @@ def plotChart():
     tracePKPointOffence = go.Bar(
         x=nameList,
         y=pkPointsRatingList,
-        name='PK Point Scoring Rating',
+        name='PK Point Scoring',
         marker=dict(
             color='rgb(216, 21, 21)'
         )
@@ -236,7 +243,7 @@ def plotChart():
     tracePKShotOffence = go.Bar(
         x=nameList,
         y=pkShotsRatingList,
-        name='PK Shot Contribution Rating',
+        name='PK Shot Contribution',
         marker=dict(
             color='rgb(255, 32, 52)'
         )
@@ -244,7 +251,7 @@ def plotChart():
     layout = go.Layout(
         barmode='stack',
         title=go.layout.Title(
-            text='Offensive Efficiency',
+            text='Offensive Efficiency (This currently ignores Quality of Teammates/Opponents)',
             x=0
         ),
         xaxis = dict(tickangle=-30)
@@ -253,69 +260,10 @@ def plotChart():
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig, file='player-model')
 
-#https://stackoverflow.com/questions/44309507/stacked-bar-plot-using-matplotlib
-# def stacked_bar(data, series_labels, category_labels=None,
-#                 show_values=False, value_format="{}", y_label=None,
-#                 grid=True, reverse=False):
-#     """Plots a stacked bar chart with the data and labels provided.
-#
-#     Keyword arguments:
-#     data            -- 2-dimensional numpy array or nested list
-#                        containing data for each series in rows
-#     series_labels   -- list of series labels (these appear in
-#                        the legend)
-#     category_labels -- list of category labels (these appear
-#                        on the x-axis)
-#     show_values     -- If True then numeric value labels will
-#                        be shown on each bar
-#     value_format    -- Format string for numeric value labels
-#                        (default is "{}")
-#     y_label         -- Label for y-axis (str)
-#     grid            -- If True display grid
-#     reverse         -- If True reverse the order that the
-#                        series are displayed (left-to-right
-#                        or right-to-left)
-#     """
-#
-#     ny = len(data[0])
-#     ind = list(range(ny))
-#
-#     axes = []
-#     cum_size = np.zeros(ny)
-#
-#     data = np.array(data)
-#
-#     if reverse:
-#         data = np.flip(data, axis=1)
-#         category_labels = reversed(category_labels)
-#
-#     for i, row_data in enumerate(data):
-#         axes.append(plt.bar(ind, row_data, bottom=cum_size,
-#                             label=series_labels[i]))
-#         cum_size += row_data
-#
-#     if category_labels:
-#         plt.xticks(ind, category_labels)
-#
-#     if y_label:
-#         plt.ylabel(y_label)
-#
-#     plt.legend()
-#
-#     if grid:
-#         plt.grid()
-#
-#     if show_values:
-#         for axis in axes:
-#             for bar in axis:
-#                 w, h = bar.get_width(), bar.get_height()
-#                 plt.text(bar.get_x() + w / 2, bar.get_y() + h / 2,
-#                          value_format.format(h), ha="center",
-#                          va="center")
-
-#def matPlotChart():
-
 def endTimer():
+    """
+    Timer used for debugging to quickly catch issues that were costly to loading times.
+    """
     print ('Finishing...\n')
     end = time.time()
     totalTime = "{0:.4f}".format(end - start)
@@ -332,12 +280,6 @@ i5v5Data = load5v5IndividualData()
 iPPData = loadPPIndividualData()
 iPKData = loadPKIndividualData()
 
-# Merge Datasets (this section may still end up being used)
-# playerData = mergePlayerData(summaryData, assistData)
-# playerData = mergePlayerData(playerData, faceoffData)
-# playerData = mergePlayerData(playerData, penaltyData)
-# playerData = mergePlayerData(playerData, miscData)
-
 teamAllData = allTeamData
 team5v5Data = team5v5Data
 playerAllData = allSkaterData
@@ -345,16 +287,11 @@ player5v5Data = i5v5Data
 playerPPData = iPPData
 playerPKData = iPKData
 
-
 # Feed and manipulate the data for use
 print ('Processing...\n')
 processData()
 
 # Plot data on Plot.ly
 plotChart()
-
-# Plot data with matplotlib
-#matPlotChart()
-
 
 endTimer()

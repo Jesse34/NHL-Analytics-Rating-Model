@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e724e12-fcc5-452f-9dff-f62392d3e47a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Analytics Model Example.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Analytics Model Example.png" afterPath="$PROJECT_DIR$/Analytics Model Example.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HockeyStatsModel.py" afterPath="$PROJECT_DIR$/HockeyStatsModel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skater.py" afterPath="$PROJECT_DIR$/Skater.py" />
@@ -17,33 +16,43 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="HockeyStatsModel.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HockeyStatsModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="910">
-              <caret line="163" column="13" lean-forward="false" selection-start-line="163" selection-start-column="13" selection-end-line="163" selection-end-column="13" />
+            <state relative-caret-position="885">
+              <caret line="253" column="18" lean-forward="false" selection-start-line="253" selection-start-column="18" selection-end-line="253" selection-end-column="18" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#816#927#0" expanded="false" />
-                <element signature="e#874#927#0" expanded="false" />
-                <element signature="e#955#1070#0" expanded="false" />
-                <element signature="e#1104#1231#0" expanded="false" />
-                <element signature="e#1265#1380#0" expanded="false" />
-                <element signature="e#1413#1525#0" expanded="false" />
-                <element signature="e#1558#1672#0" expanded="false" />
+                <element signature="e#816#994#0" expanded="false" />
+                <element signature="e#941#994#0" expanded="false" />
+                <element signature="e#1022#1209#0" expanded="false" />
+                <element signature="e#1156#1209#0" expanded="false" />
+                <element signature="e#1243#1432#0" expanded="false" />
+                <element signature="e#1375#1432#0" expanded="false" />
+                <element signature="e#1466#1648#0" expanded="false" />
+                <element signature="e#1601#1648#0" expanded="false" />
+                <element signature="e#1681#1863#0" expanded="false" />
+                <element signature="e#1896#2081#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Skater.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Skater.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Skater.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="135" column="65" lean-forward="false" selection-start-line="135" selection-start-column="65" selection-end-line="135" selection-end-column="65" />
+            <state relative-caret-position="-3484">
+              <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Analytics Model Example.png" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Analytics Model Example.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -60,8 +69,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/HockeyStatsModel.py" />
         <option value="$PROJECT_DIR$/Skater.py" />
+        <option value="$PROJECT_DIR$/HockeyStatsModel.py" />
       </list>
     </option>
   </component>
@@ -86,7 +95,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -101,7 +110,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -232,24 +241,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25266525" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32917964" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -265,27 +275,68 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/HockeyStatsModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="910">
+        <state relative-caret-position="2175">
           <caret line="163" column="13" lean-forward="false" selection-start-line="163" selection-start-column="13" selection-end-line="163" selection-end-column="13" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#816#927#0" expanded="false" />
-            <element signature="e#874#927#0" expanded="false" />
-            <element signature="e#955#1070#0" expanded="false" />
-            <element signature="e#1104#1231#0" expanded="false" />
-            <element signature="e#1265#1380#0" expanded="false" />
-            <element signature="e#1413#1525#0" expanded="false" />
-            <element signature="e#1558#1672#0" expanded="false" />
+            <element signature="e#816#994#0" expanded="false" />
+            <element signature="e#941#994#0" expanded="false" />
+            <element signature="e#1022#1209#0" expanded="false" />
+            <element signature="e#1156#1209#0" expanded="false" />
+            <element signature="e#1243#1432#0" expanded="false" />
+            <element signature="e#1375#1432#0" expanded="false" />
+            <element signature="e#1466#1648#0" expanded="false" />
+            <element signature="e#1601#1648#0" expanded="false" />
+            <element signature="e#1681#1863#0" expanded="false" />
+            <element signature="e#1896#2081#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Skater.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="135" column="65" lean-forward="false" selection-start-line="135" selection-start-column="65" selection-end-line="135" selection-end-column="65" />
+        <state relative-caret-position="2100">
+          <caret line="140" column="91" lean-forward="false" selection-start-line="140" selection-start-column="91" selection-end-line="140" selection-end-column="91" />
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analytics Model Example.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skater.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3484">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HockeyStatsModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="253" column="18" lean-forward="false" selection-start-line="253" selection-start-column="18" selection-end-line="253" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#816#994#0" expanded="false" />
+            <element signature="e#941#994#0" expanded="false" />
+            <element signature="e#1022#1209#0" expanded="false" />
+            <element signature="e#1156#1209#0" expanded="false" />
+            <element signature="e#1243#1432#0" expanded="false" />
+            <element signature="e#1375#1432#0" expanded="false" />
+            <element signature="e#1466#1648#0" expanded="false" />
+            <element signature="e#1601#1648#0" expanded="false" />
+            <element signature="e#1681#1863#0" expanded="false" />
+            <element signature="e#1896#2081#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analytics Model Example.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
   </component>
