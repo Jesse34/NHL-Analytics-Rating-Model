@@ -8,21 +8,26 @@ class Skater:
         self.shPercentage = shPerc
 
     def __str__(self):
-        line1 = self.name + ', ' + self.team + ', ' + '{0:.2f}'.format(self.toiALL) + 'min \n'
+        """
+        Displays:
+         - Name, Team, Position, Time on Ice
+         - Total Offensive Rating
+         - Offensive Ratings for each of the 3 situations (even, pp, pk)
+         - Offensive Points Ratings
+         - Offensive Shots Ratings
+        :return: Skater Object data string
+        """
+        line1 = self.name + ', ' + self.position + ', ' + self.team + ', ' + '{0:.2f}'.format(self.toiALL) + 'min \n'
         line2 = 'Total ORating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
         line3 = '5v5 ORating: ' + "{0:.4f}".format(self.evOffensiveRating) + '\n'
         line4 = 'PP ORating: ' + "{0:.4f}".format(self.ppOffensiveRating) + '\n'
         line5 = 'PK ORating: ' + "{0:.4f}".format(self.pkOffensiveRating) + '\n'
         line6 = 'Offensive Points Rating: ' + "{0:.4f}".format(self.offensivePointsRating) + '\n'
         line7 = 'Offensive Shots Rating: ' + "{0:.4f}".format(self.offensiveShotsRating) + '\n'
-        line8 = 'Total Offensive Rating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
-        return line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8# + line9
+        return line1 + line2 + line3 + line4 + line5 + line6 + line7
 
-    #
     # Declaring variables to store any applicable data
-    #
     # Some of this isn't used yet and some of it should be moved into a different "Model" class to cut down on the clutter
-    #
     offensiveRating = 0
     offensivePointsRating = 0
     offensiveShotsRating = 0
