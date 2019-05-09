@@ -237,7 +237,7 @@ def plotChart():
         y=pkPointsRatingList,
         name='PK Point Scoring',
         marker=dict(
-            color='rgb(216, 21, 21)'
+            color='rgb(168, 18, 18)'
         )
     )
     tracePKShotOffence = go.Bar(
