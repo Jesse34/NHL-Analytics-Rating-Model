@@ -171,17 +171,17 @@ def processData():
         if (limit > count and s.toiALL > 1200 and s.position == "D"):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
-            evOffenceRatingList.append(s.evOffensiveRating)
-            ppOffenceRatingList.append(s.ppOffensiveRating)
-            pkOffenceRatingList.append(s.pkOffensiveRating)
+            evOffenceRatingList.append("{0:.4f}".format(s.evOffensiveRating))
+            ppOffenceRatingList.append("{0:.4f}".format(s.ppOffensiveRating))
+            pkOffenceRatingList.append("{0:.4f}".format(s.pkOffensiveRating))
 
-            evShotsRatingList.append(s.evShotsRating)
-            ppShotsRatingList.append(s.ppShotsRating)
-            pkShotsRatingList.append(s.pkShotsRating)
+            evShotsRatingList.append("{0:.4f}".format(s.evShotsRating))
+            ppShotsRatingList.append("{0:.4f}".format(s.ppShotsRating))
+            pkShotsRatingList.append("{0:.4f}".format(s.pkShotsRating))
 
-            evPointsRatingList.append(s.evPointsRating)
-            ppPointsRatingList.append(s.ppPointsRating)
-            pkPointsRatingList.append(s.pkPointsRating)
+            evPointsRatingList.append("{0:.4f}".format(s.evPointsRating))
+            ppPointsRatingList.append("{0:.4f}".format(s.ppPointsRating))
+            pkPointsRatingList.append("{0:.4f}".format(s.pkPointsRating))
             count += 1
             print(s)
 
