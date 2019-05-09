@@ -1,50 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Made mistakes with scaling the Shots rating to work alongside the Points rating. Will need to players like McDavid vs Ovechkin on paper to find mistakes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Skater:
     def __init__(self, name, team, position, games, toiAll, shPerc):
         self.name = name
@@ -63,7 +16,6 @@ class Skater:
         line6 = 'Offensive Points Rating: ' + "{0:.4f}".format(self.offensivePointsRating) + '\n'
         line7 = 'Offensive Shots Rating: ' + "{0:.4f}".format(self.offensiveShotRating) + '\n'
         line8 = 'Total Offensive Rating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
-        #line9 = 'IPP: ' + str(self.iPointPercentage) + ' : TPP ' + "{0:.2f}".format(self.iTeamPointPercentage * 100) + '\n'
         return line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8# + line9
 
     offensiveRating = 0
@@ -180,17 +132,21 @@ class Skater:
         ppWeight = self.toiPP / self.toiALL
         pkWeight = self.toiPK / self.toiALL
 
+        # Shots are multiplied to keep data scaled similarly to the Points Rating.
+        # Temporary fix until the weightings are better adjusted.
+        shotMultiplier = 8
+
         if (self.toi5v5 > 0):
             self.evPointsRating = self.evPointsRating / (self.toi5v5 / 60)
-            self.evShotsRating = (self.evShotsRating / (self.toi5v5 / 60)) * 10
+            self.evShotsRating = (self.evShotsRating / (self.toi5v5 / 60)) * shotMultiplier
             evORatingPer60 += self.evPointsRating + self.evShotsRating
         if (self.toiPP > 0):
             self.ppPointsRating = (self.ppPointsRating / (self.toiPP / 60)) * ppWeight
-            self.ppShotsRating = ((self.ppShotsRating / (self.toiPP / 60)) * ppWeight) * 10
+            self.ppShotsRating = ((self.ppShotsRating / (self.toiPP / 60)) * ppWeight) * shotMultiplier
             ppORatingPer60 += self.ppPointsRating + self.ppShotsRating
         if (self.toiPK > 0):
             self.pkPointsRating = (self.pkPointsRating / (self.toiPK / 60)) * pkWeight
-            self.pkShotsRating = ((self.pkShotsRating / (self.toiPK / 60)) * pkWeight) * 10
+            self.pkShotsRating = ((self.pkShotsRating / (self.toiPK / 60)) * pkWeight) * shotMultiplier
             pkORatingPer60 += self.pkPointsRating + self.pkShotsRating
 
         self.offensivePointsRating = self.evPointsRating + self.ppPointsRating + self.pkPointsRating

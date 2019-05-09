@@ -120,7 +120,7 @@ def processData():
                 # shotsBlocked = player['Shots Blocked']
                 # faceoffWins = player['Faceoffs Won']
                 # faceoffLosses = player['Faceoffs Lost']
-        
+
                 # minorPenalties = player['Minor']
                 # majorPenalties = player['Major']
                 # misconductPenalties = player['Misconduct']
@@ -161,22 +161,22 @@ def processData():
     skaterList.sort(key=lambda x: x.offensiveRating, reverse=True)
 
     count = 0
-    limit = 75
+    limit = 30
     for s in skaterList:
-        if (s.team == "TOR" and limit > count):
+        if (limit > count and s.toiALL > 1200):
             nameList.append(s.name)
             toiAllList.append(s.toiALL)
-            evOffenceRatingList.append('{0:.3f}'.format(s.evOffensiveRating))
-            ppOffenceRatingList.append('{0:.3f}'.format(s.ppOffensiveRating))
-            pkOffenceRatingList.append('{0:.3f}'.format(s.pkOffensiveRating))
+            evOffenceRatingList.append(s.evOffensiveRating)
+            ppOffenceRatingList.append(s.ppOffensiveRating)
+            pkOffenceRatingList.append(s.pkOffensiveRating)
 
-            evShotsRatingList.append('{0:.3f}'.format(s.evShotsRating))
-            ppShotsRatingList.append('{0:.3f}'.format(s.ppShotsRating))
-            pkShotsRatingList.append('{0:.3f}'.format(s.pkShotsRating))
+            evShotsRatingList.append(s.evShotsRating)
+            ppShotsRatingList.append(s.ppShotsRating)
+            pkShotsRatingList.append(s.pkShotsRating)
 
-            evPointsRatingList.append('{0:.3f}'.format(s.evPointsRating))
-            ppPointsRatingList.append('{0:.3f}'.format(s.ppPointsRating))
-            pkPointsRatingList.append('{0:.3f}'.format(s.pkPointsRating))
+            evPointsRatingList.append(s.evPointsRating)
+            ppPointsRatingList.append(s.ppPointsRating)
+            pkPointsRatingList.append(s.pkPointsRating)
             count += 1
 
             print(s)
@@ -188,15 +188,7 @@ def processData():
 def plotChart():
     print ('Plotting...\n')
 
-    # Traces
-    # traceOffence = go.Bar(
-    #     x=nameList,
-    #     y=evOffenceRatingList,
-    #     name='5v5 Offense Rating',
-    #     marker=dict(
-    #         color='rgb(22, 50, 116)'
-    #     )
-    # )
+    # Even Strength Traces
     tracePointOffence = go.Bar(
         x=nameList,
         y=evPointsRatingList,
@@ -213,17 +205,11 @@ def plotChart():
             color='rgb(22, 80, 156)'
         )
     )
-    # tracePPOffence = go.Bar(
-    #     x=nameList,
-    #     y=ppOffenceRatingList,
-    #     name='PP Offense Rating',
-    #     marker=dict(
-    #         color='rgb(10, 136, 38)'
-    #     )
-    # )
+
+    # Powerplay Traces
     tracePPPointOffence = go.Bar(
         x=nameList,
-        y=ppOffenceRatingList,
+        y=ppPointsRatingList,
         name='PP Point Scoring Rating',
         marker=dict(
             color='rgb(20, 136, 45)'
@@ -237,17 +223,11 @@ def plotChart():
             color='rgb(20, 160, 50)'
         )
     )
-    # tracePKOffence = go.Bar(
-    #     x=nameList,
-    #     y=pkOffenceRatingList,
-    #     name='PK Offense Rating',
-    #     marker=dict(
-    #         color='rgb(234, 32, 42)'
-    #     )
-    # )
+
+    # Penalty Kill Traces
     tracePKPointOffence = go.Bar(
         x=nameList,
-        y=pkOffenceRatingList,
+        y=pkPointsRatingList,
         name='PK Point Scoring Rating',
         marker=dict(
             color='rgb(216, 21, 21)'
@@ -261,10 +241,6 @@ def plotChart():
             color='rgb(255, 32, 52)'
         )
     )
-
-    #rgb(244,233,17)
-    #rgb(24, 118, 242)
-
     layout = go.Layout(
         barmode='stack',
         title=go.layout.Title(
@@ -362,12 +338,12 @@ iPKData = loadPKIndividualData()
 # playerData = mergePlayerData(playerData, penaltyData)
 # playerData = mergePlayerData(playerData, miscData)
 
-teamAllData = allTeamData # On-Ice is for later
-team5v5Data = team5v5Data # On-Ice is for later
-playerAllData = allSkaterData # On-Ice is for later
-player5v5Data = i5v5Data # On-Ice is for later
-playerPPData = iPPData # On-Ice is for later
-playerPKData = iPKData # On-Ice is for later
+teamAllData = allTeamData
+team5v5Data = team5v5Data
+playerAllData = allSkaterData
+player5v5Data = i5v5Data
+playerPPData = iPPData
+playerPKData = iPKData
 
 
 # Feed and manipulate the data for use
