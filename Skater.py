@@ -60,8 +60,11 @@ class Skater:
         line3 = '5v5 ORating: ' + "{0:.4f}".format(self.evOffensiveRating) + '\n'
         line4 = 'PP ORating: ' + "{0:.4f}".format(self.ppOffensiveRating) + '\n'
         line5 = 'PK ORating: ' + "{0:.4f}".format(self.pkOffensiveRating) + '\n'
-        line6 = 'IPP: ' + str(self.iPointPercentage) + ' : TPP ' + "{0:.2f}".format(self.iTeamPointPercentage * 100) + '\n'
-        return line1 + line2 + line3 + line4 + line5 + line6
+        line6 = 'Offensive Points Rating: ' + "{0:.4f}".format(self.offensivePointsRating) + '\n'
+        line7 = 'Offensive Shots Rating: ' + "{0:.4f}".format(self.offensiveShotRating) + '\n'
+        line8 = 'Total Offensive Rating: ' + "{0:.4f}".format(self.offensiveRating) + '\n'
+        #line9 = 'IPP: ' + str(self.iPointPercentage) + ' : TPP ' + "{0:.2f}".format(self.iTeamPointPercentage * 100) + '\n'
+        return line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8# + line9
 
     offensiveRating = 0
     offensivePointsRating = 0
@@ -179,15 +182,15 @@ class Skater:
 
         if (self.toi5v5 > 0):
             self.evPointsRating = self.evPointsRating / (self.toi5v5 / 60)
-            self.evShotsRating = self.evShotsRating / (self.toi5v5 / 60)
+            self.evShotsRating = (self.evShotsRating / (self.toi5v5 / 60)) * 10
             evORatingPer60 += self.evPointsRating + self.evShotsRating
         if (self.toiPP > 0):
             self.ppPointsRating = (self.ppPointsRating / (self.toiPP / 60)) * ppWeight
-            self.ppShotsRating = (self.ppShotsRating / (self.toiPP / 60)) * ppWeight
+            self.ppShotsRating = ((self.ppShotsRating / (self.toiPP / 60)) * ppWeight) * 10
             ppORatingPer60 += self.ppPointsRating + self.ppShotsRating
         if (self.toiPK > 0):
             self.pkPointsRating = (self.pkPointsRating / (self.toiPK / 60)) * pkWeight
-            self.pkShotsRating = (self.pkShotsRating / (self.toiPK / 60)) * pkWeight
+            self.pkShotsRating = ((self.pkShotsRating / (self.toiPK / 60)) * pkWeight) * 10
             pkORatingPer60 += self.pkPointsRating + self.pkShotsRating
 
         self.offensivePointsRating = self.evPointsRating + self.ppPointsRating + self.pkPointsRating
@@ -256,6 +259,7 @@ class Skater:
         SCFWeight = 0.020
         HDCFWeight = 0.150
 
+        # League avg Shooting% for Unblocked Shots (Fenwick)
         evxFSHLeagueAvg = 0.057
         ppxFSHLeagueAvg = 0.092
         pkxFSHLeagueAvg = 0.070

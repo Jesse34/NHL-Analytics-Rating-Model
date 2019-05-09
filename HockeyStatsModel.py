@@ -27,9 +27,14 @@ offenceRatingList = []
 evOffenceRatingList = []
 ppOffenceRatingList = []
 pkOffenceRatingList = []
-evShotRatingList = []
-ppShotRatingList = []
-pkShotRatingList = []
+
+evShotsRatingList = []
+ppShotsRatingList = []
+pkShotsRatingList = []
+
+evPointsRatingList = []
+ppPointsRatingList = []
+pkPointsRatingList = []
 
 defenceRatingList = []
 
@@ -164,49 +169,101 @@ def processData():
             evOffenceRatingList.append('{0:.3f}'.format(s.evOffensiveRating))
             ppOffenceRatingList.append('{0:.3f}'.format(s.ppOffensiveRating))
             pkOffenceRatingList.append('{0:.3f}'.format(s.pkOffensiveRating))
+
+            evShotsRatingList.append('{0:.3f}'.format(s.evShotsRating))
+            ppShotsRatingList.append('{0:.3f}'.format(s.ppShotsRating))
+            pkShotsRatingList.append('{0:.3f}'.format(s.pkShotsRating))
+
+            evPointsRatingList.append('{0:.3f}'.format(s.evPointsRating))
+            ppPointsRatingList.append('{0:.3f}'.format(s.ppPointsRating))
+            pkPointsRatingList.append('{0:.3f}'.format(s.pkPointsRating))
             count += 1
 
             print(s)
-            print("Off Points Rating: " + str(s.offensivePointsRating))
-            print("Off Shots Rating: " + str(s.offensiveShotRating))
-            print("Total Offensive Rating: " + str(s.offensiveRating))
 
     print (str(len(nameList)) + ' results\n')
 
 
 # Configure the settings for the chart and sent the data to Plot.ly
 def plotChart():
-    print ('Plotting...')
+    print ('Plotting...\n')
 
     # Traces
-    traceOffence = go.Bar(
+    # traceOffence = go.Bar(
+    #     x=nameList,
+    #     y=evOffenceRatingList,
+    #     name='5v5 Offense Rating',
+    #     marker=dict(
+    #         color='rgb(22, 50, 116)'
+    #     )
+    # )
+    tracePointOffence = go.Bar(
         x=nameList,
-        y=evOffenceRatingList,
-        name='5v5 Offense Rating',
+        y=evPointsRatingList,
+        name='5v5 Point Scoring Rating',
         marker=dict(
             color='rgb(22, 50, 116)'
         )
     )
-    tracePPOffence = go.Bar(
+    traceShotOffence = go.Bar(
         x=nameList,
-        y=ppOffenceRatingList,
-        name='PP Offense Rating',
+        y=evShotsRatingList,
+        name='5v5 Shot Contribution Rating',
         marker=dict(
-            color='rgb(10, 136, 38)'
+            color='rgb(22, 80, 156)'
         )
     )
-    tracePKOffence = go.Bar(
+    # tracePPOffence = go.Bar(
+    #     x=nameList,
+    #     y=ppOffenceRatingList,
+    #     name='PP Offense Rating',
+    #     marker=dict(
+    #         color='rgb(10, 136, 38)'
+    #     )
+    # )
+    tracePPPointOffence = go.Bar(
+        x=nameList,
+        y=ppOffenceRatingList,
+        name='PP Point Scoring Rating',
+        marker=dict(
+            color='rgb(20, 136, 45)'
+        )
+    )
+    tracePPShotOffence = go.Bar(
+        x=nameList,
+        y=ppShotsRatingList,
+        name='PP Shot Contribution Rating',
+        marker=dict(
+            color='rgb(20, 160, 50)'
+        )
+    )
+    # tracePKOffence = go.Bar(
+    #     x=nameList,
+    #     y=pkOffenceRatingList,
+    #     name='PK Offense Rating',
+    #     marker=dict(
+    #         color='rgb(234, 32, 42)'
+    #     )
+    # )
+    tracePKPointOffence = go.Bar(
         x=nameList,
         y=pkOffenceRatingList,
-        name='PK Offense Rating',
+        name='PK Point Scoring Rating',
         marker=dict(
-            color='rgb(234, 32, 42)'
+            color='rgb(216, 21, 21)'
+        )
+    )
+    tracePKShotOffence = go.Bar(
+        x=nameList,
+        y=pkShotsRatingList,
+        name='PK Shot Contribution Rating',
+        marker=dict(
+            color='rgb(255, 32, 52)'
         )
     )
 
     #rgb(244,233,17)
     #rgb(24, 118, 242)
-    # '
 
     layout = go.Layout(
         barmode='stack',
@@ -216,7 +273,7 @@ def plotChart():
         ),
         xaxis = dict(tickangle=-30)
     )
-    data = [traceOffence, tracePPOffence, tracePKOffence]
+    data = [tracePointOffence, traceShotOffence, tracePPPointOffence, tracePPShotOffence, tracePKPointOffence, tracePKShotOffence]
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig, file='player-model')
 
@@ -283,12 +340,12 @@ def plotChart():
 #def matPlotChart():
 
 def endTimer():
-    print ('Finishing...')
+    print ('Finishing...\n')
     end = time.time()
     totalTime = "{0:.4f}".format(end - start)
-    print ('\nTime elapsed: ' + totalTime + 's')
+    print ('Time elapsed: ' + totalTime + 's')
 
-print ('Starting...')
+print ('Starting...\n')
 start = time.time()
 
 # Convert JSON data to usable object lists
@@ -314,7 +371,7 @@ playerPKData = iPKData # On-Ice is for later
 
 
 # Feed and manipulate the data for use
-print ('Processing...')
+print ('Processing...\n')
 processData()
 
 # Plot data on Plot.ly
